@@ -45,6 +45,9 @@ class Product
     #[ORM\ManyToOne(targetEntity: Brand::class, inversedBy: 'products')]
     private $brand;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isActive;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -189,6 +192,18 @@ class Product
     public function setBrand(?Brand $brand): self
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

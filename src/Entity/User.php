@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
     private $addresses;
 
+    #[ORM\Column(type: 'datetime')]
+    private $birthDate;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -213,6 +216,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $address->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }

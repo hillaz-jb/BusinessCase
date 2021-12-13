@@ -24,6 +24,9 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private $products;
 
+    #[ORM\Column(type: 'integer')]
+    private $idParent;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -84,6 +87,18 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdParent(): ?int
+    {
+        return $this->idParent;
+    }
+
+    public function setIdParent(int $idParent): self
+    {
+        $this->idParent = $idParent;
 
         return $this;
     }

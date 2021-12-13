@@ -31,6 +31,15 @@ class Order
     #[ORM\ManyToMany(targetEntity: Address::class)]
     private $addresses;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $endAt;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    private $isValidate;
+
+    #[ORM\Column(type: 'string', length: 50)]
+    private $status;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -109,6 +118,42 @@ class Order
     public function removeAddress(Address $address): self
     {
         $this->addresses->removeElement($address);
+
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): self
+    {
+        $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getIsValidate(): ?bool
+    {
+        return $this->isValidate;
+    }
+
+    public function setIsValidate(?bool $isValidate): self
+    {
+        $this->isValidate = $isValidate;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
