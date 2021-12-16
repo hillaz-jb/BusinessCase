@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ApiResource(
+    collectionOperations:['get'] , itemOperations: ['get'],
+)]
 #[ORM\Table(name: '`order`')]
 class Order
 {
@@ -28,7 +32,7 @@ class Order
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     private $user;
 
-    #[ORM\ManyToMany(targetEntity: Address::class)]
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: AddressType::class)]
     private $addresses;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
@@ -40,9 +44,13 @@ class Order
     #[ORM\Column(type: 'string', length: 50)]
     private $status;
 
+    #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: AddressType::class)]
+    private $addressTypes;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
+        $this->addressTypes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,6 +162,36 @@ class Order
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AddressType[]
+     */
+    public function getAddressTypes(): Collection
+    {
+        return $this->addressTypes;
+    }
+
+    public function addAddressType(AddressType $addressType): self
+    {
+        if (!$this->addressTypes->contains($addressType)) {
+            $this->addressTypes[] = $addressType;
+            $addressType->setPurchase($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddressType(AddressType $addressType): self
+    {
+        if ($this->addressTypes->removeElement($addressType)) {
+            // set the owning side to null (unless already changed)
+            if ($addressType->getPurchase() === $this) {
+                $addressType->setPurchase(null);
+            }
+        }
 
         return $this;
     }

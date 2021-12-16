@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ApiResource(
+    collectionOperations:['get'] , itemOperations: ['get'],
+)]
 class Address
 {
     #[ORM\Id]
