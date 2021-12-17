@@ -166,33 +166,33 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection|AddressType[]
-     */
-    public function getAddressTypes(): Collection
-    {
-        return $this->addressTypes;
-    }
-
-    public function addAddressType(AddressType $addressType): self
-    {
-        if (!$this->addressTypes->contains($addressType)) {
-            $this->addressTypes[] = $addressType;
-            $addressType->setPurchase($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAddressType(AddressType $addressType): self
-    {
-        if ($this->addressTypes->removeElement($addressType)) {
-            // set the owning side to null (unless already changed)
-            if ($addressType->getPurchase() === $this) {
-                $addressType->setPurchase(null);
-            }
-        }
-
-        return $this;
-    }
+//    /**
+//     * @return Collection|AddressType[]
+//     */
+//    public function getAddressTypes(): Collection
+//    {
+//        return $this->addressTypes;
+//    }
+//
+//    public function addAddressType(AddressType $addressType): self
+//    {
+//        if (!$this->addressTypes->contains($addressType)) {
+//            $this->addressTypes[] = $addressType;
+//            $addressType->setPurchase($this);
+//        }
+//
+//        return $this;
+//    }
+//
+//    public function removeAddressType(AddressType $addressType): self
+//    {
+//        if ($this->addressTypes->removeElement($addressType)) {
+//            // set the owning side to null (unless already changed)
+//            if ($addressType->getPurchase() === $this) {
+//                $addressType->setPurchase(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 }
