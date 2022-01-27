@@ -1,0 +1,5 @@
+App\Entity\Brand:
+  product_{1..22}:
+    name: "<word()>"
+    picture: "<numerify('https://picsum.photos/id/###/200/300.jpg')>"
+    country: "<country()>"
