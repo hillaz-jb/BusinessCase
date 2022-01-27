@@ -3,5 +3,5 @@ App\Entity\User:
     firstName: "<firstName()>"
     lastName: "<lastName()>"
     birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"
-    email: '<email()>'
+    email (unique): '<email()>'
     password: '<password()>'

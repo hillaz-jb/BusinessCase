@@ -1,0 +1,28 @@
+App\Entity\Category:
+  category1:
+    title: 'Jeux'
+    description: '<text(200)>'
+
+  category2:
+    title: 'Alimentation'
+    description: '<text(200)>'
+
+  category3:
+    title: 'Alimentation Chat'
+    description: '<text(200)>'
+    parent: '@category2'
+
+  category4:
+    title: 'Alimentation Chien'
+    description: '<text(200)>'
+    parent: '@category2'
+
+  category5:
+    title: 'Jeux Chat'
+    description: '<text(200)>'
+    parent: '@category1'
+
+  category6:
+    title: 'Chien'
+    description: '<text(200)>'
+    parent: '@category1'
