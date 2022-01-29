@@ -1,7 +1,23 @@
 App\Entity\User:
-  user_{1..190}:
+
+  customer:
+    firstName: "Julien"
+    lastName: "Leclient"
+    birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"
+    email (unique): "user@user.fr"
+    password: "customer"
+
+  admin:
+    firstName: "Julie"
+    lastName: "Ladmin"
+    birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"
+    email (unique): "admin@admin.fr"
+    password: "administrator"
+    roles: ["ROLE_ADMIN"]
+
+  user{1..190}:
     firstName: "<firstName()>"
     lastName: "<lastName()>"
     birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"
-    email (unique): '<email()>'
-    password: '<password()>'
+    email (unique): "<email()>"
+    password: "<password()>"

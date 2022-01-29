@@ -1,7 +1,7 @@
 App\Entity\Product:
-  product_{1..200}:
+  product{1..200}:
     title: "<word()>"
     ean: "<numerify('#############')>"
     createdAt: "<dateTimeBetween('-120 years', '-1 years', null)>"
-    brand: "@brand_*"
+    brand: "@brand*"
     isActive: "<randomElement(['1','0'])>"
