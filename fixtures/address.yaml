@@ -1,0 +1,7 @@
+App\Entity\Address:
+  address{1..100}:
+    name: "<randomElement(['domicile','travail'])>"
+    address1: "<randomNumber(2, false)> <randomElement(['Rue','Avenue', 'Blvd', 'Impasse'])> <streetName()>"
+    city: "<city()>"
+    postalCode: "<numerify('#####')>"
+    user: "@user*"

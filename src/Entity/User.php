@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\UserRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -86,10 +87,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     #[Groups(['full_admin'])]
+    #[ApiSubresource]
     private Collection $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
     #[Groups(['full_admin'])]
+    #[ApiSubresource]
     private Collection $addresses;
 
     #[ORM\Column(type: 'datetime')]

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\BrandRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -35,6 +36,7 @@ class Brand
     private $country;
 
     #[ORM\OneToMany(mappedBy: 'brand', targetEntity: Product::class)]
+    #[ApiSubresource]
     private $products;
 
     public function __construct()

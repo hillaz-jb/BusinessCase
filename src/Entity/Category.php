@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,6 +28,7 @@ class Category
     private string $description;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
+    #[ApiSubresource]
     private $products;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'id_parent')]

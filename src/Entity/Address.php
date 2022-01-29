@@ -30,7 +30,7 @@ class Address
     private $postalCode;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $town;
+    private $city;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
     private $user;
@@ -88,14 +88,14 @@ class Address
         return $this;
     }
 
-    public function getTown(): ?string
+    public function getCity(): ?string
     {
-        return $this->town;
+        return $this->city;
     }
 
-    public function setTown(string $town): self
+    public function setCity(string $city): self
     {
-        $this->town = $town;
+        $this->city = $city;
 
         return $this;
     }
