@@ -1,0 +1,15 @@
+common:
+  button:
+    submit: "Envoyer"
+  terms:
+    title: "Conditions d'utilisations"
+  userForm:
+    firstName: "Prénom"
+    lastName: "Nom"
+    email: "Email"
+    password: "Mot de Passe"
+    birthDate: "Date de naissance"
+login:
+  title: "Connexion"
+register:
+  title: "Inscription"

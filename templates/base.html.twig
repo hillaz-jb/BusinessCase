@@ -13,7 +13,19 @@
             {{ encore_entry_script_tags('scripts') }}
         {% endblock %}
     </head>
-    <body>
+    {% block content %}
+        <body>
+
+        {% block header %}
+            <header>{% include 'common/partials/_header.html.twig' %}</header>
+        {% endblock %}
+
         {% block body %}{% endblock %}
-    </body>
+
+        {% block footer %}
+            <footer class="bg-dark">{% include 'common/partials/_footer.html.twig' %}</footer>
+        {% endblock %}
+
+        </body>
+    {% endblock %}
 </html>

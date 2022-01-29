@@ -23,6 +23,6 @@ App\Entity\Category:
     parent: '@category1'
 
   category6:
-    title: 'Chien'
+    title: 'Jeux Chien'
     description: '<text(200)>'
     parent: '@category1'

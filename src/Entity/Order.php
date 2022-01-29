@@ -9,9 +9,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ApiResource(
-    collectionOperations:['get'] , itemOperations: ['get'],
-)]
+//#[ApiResource(
+//    collectionOperations:['get'] , itemOperations: ['get'],
+//)]
 #[ORM\Table(name: '`order`')]
 class Order
 {
@@ -32,8 +32,8 @@ class Order
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'order', targetEntity: AddressType::class)]
-    private $addresses;
+//    #[ORM\OneToMany(mappedBy: 'order', targetEntity: AddressType::class)]
+//    private $addresses;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $endAt;
@@ -44,13 +44,13 @@ class Order
     #[ORM\Column(type: 'string', length: 50)]
     private $status;
 
-    #[ORM\OneToMany(mappedBy: 'purchase', targetEntity: AddressType::class)]
-    private $addressTypes;
+    /*#[ORM\OneToMany(mappedBy: 'purchase', targetEntity: AddressType::class)]
+    private $addressTypes;*/
 
     public function __construct()
     {
-        $this->addresses = new ArrayCollection();
-        $this->addressTypes = new ArrayCollection();
+//        $this->addresses = new ArrayCollection();
+//        $this->addressTypes = new ArrayCollection();
     }
 
     public function getId(): ?int

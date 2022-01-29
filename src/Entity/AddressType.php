@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: AddressTypeRepository::class)]
 class AddressType
 {
-    #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'addresses')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $purchase;
+//    #[ORM\Id]
+//    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'addresses')]
+//    #[ORM\JoinColumn(nullable: false)]
+//    private $purchase;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Address::class)]
