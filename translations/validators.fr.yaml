@@ -1,10 +1,14 @@
 register:
   constraints:
-    unique : '{{ label }} déjà existant !'
+    unique : "{{ label }} déjà existant !"
+    not_blank: "Veuillez renseigner ce champ !"
     terms:
       message: "Vous devez accepter les conditions d'utilisation"
     email:
-
+      message: "{{ value }} n'est pas un email valide !"
+      maxMessage: "L'email doit faire {{ limit }} caractères maximum !"
     password:
-      message: "Veuillez entrez un mot de passe"
-      min_length: "Le mot de passe doit faire {{ limit }} caractères minimum !"
+      minMessage: "Le mot de passe doit faire {{ limit }} caractères minimum !"
+      maxMessage: "Le mot de passe doit faire {{ limit }} caractères maximum !"
+    birthdate:
+      range: "Vous devez être majeur pour vous inscrire !"

@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,7 +35,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'common.userForm.birthDate',
                 'attr' => array(
                     'min' => date('1900-01-01'),
-                    'max' => date('2040-01-01'),
+                    'max' => mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")),
                 )
             ])
             ->add('agreeTerms', CheckboxType::class, [
@@ -56,7 +57,9 @@ class RegistrationFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 8,
-                        'max' => 4096,
+                        'minMessage' => "register.constraints.password.minMessage",
+                        'max' => 255,
+                        'maxMessage' => "register.constraints.password.maxMessage",
                     ]),
                 ],
             ])

@@ -4,52 +4,104 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- */
+#[UniqueEntity(
+    fields: ['email'],
+    message: 'register.constraints.unique',
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    collectionOperations:['get'] , itemOperations: ['get'],
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => ['full_admin'],
+            ],
+            "security" => "is_granted('ROLE_ADMIN')"
+        ],
+    ],
+    itemOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => ['full_admin'],
+            ],
+            "security" => "is_granted('ROLE_ADMIN')"
+        ],
+    ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups(['full_admin'])]
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
+    #[Groups(['full_admin'])]
+    #[Assert\NotBlank, Assert\Email(
+        message: 'register.constraints.email.message',
+    ), Assert\Length(
+        max: '180',
+        maxMessage: 'register.constraints.email.maxMessage',
+    )]
+    private string $email;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    #[Groups(['full_admin'])]
+    private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    private $password;
+    #[Groups(['full_admin'])]
+    #[Assert\Length(
+        min: '8',
+        max: '255',
+        minMessage: 'register.constraints.password.minMessage',
+        maxMessage: 'register.constraints.password.maxMessage',
+    )]
+    private string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $firstName;
+    #[Groups(['full_admin'])]
+    #[Assert\NotBlank(
+        message: 'register.constraints.not_blank',
+    )]
+    private string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $lastName;
+    #[Groups(['full_admin'])]
+    #[Assert\NotBlank(
+        message: 'register.constraints.not_blank',
+    )]
+    private string $lastName;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
-    private $orders;
+    #[Groups(['full_admin'])]
+    private Collection $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
-    private $addresses;
+    #[Groups(['full_admin'])]
+    private Collection $addresses;
 
     #[ORM\Column(type: 'datetime')]
-    private $birthDate;
+    #[Groups(['full_admin'])]
+    #[Assert\Type(DateTimeInterface::class), Assert\Range(
+        notInRangeMessage: 'register.constraints.birthdate.range',
+        min: '-120 years',
+        max: '-18 years',
+    )]
+    private DateTimeInterface $birthDate;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->addresses = new ArrayCollection();
@@ -228,12 +280,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?DateTimeInterface
     {
         return $this->birthDate;
     }
 
-    public function setBirthDate(\DateTimeInterface $birthDate): self
+    public function setBirthDate(DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
 
