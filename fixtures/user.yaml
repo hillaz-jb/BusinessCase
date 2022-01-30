@@ -15,7 +15,15 @@ App\Entity\User:
     password: "administrator"
     roles: ["ROLE_ADMIN"]
 
-  user{1..190}:
+  super_admin:
+    firstName: "Juju"
+    lastName: "Super"
+    birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"
+    email (unique): "superadmin@admin.fr"
+    password: "superadmin"
+    roles: [ "ROLE_SUPER_ADMIN" ]
+
+  user{1..80}:
     firstName: "<firstName()>"
     lastName: "<lastName()>"
     birthDate: "<dateTimeBetween('-80 years', '-18 years', null)>"

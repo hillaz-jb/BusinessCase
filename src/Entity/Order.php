@@ -4,45 +4,68 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-//#[ApiResource(
-//    collectionOperations:['get'] , itemOperations: ['get'],
-//)]
+#[ApiResource(
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => ['light_read'],
+            ],
+            "security" => "is_granted('ROLE_ADMIN')"
+        ],
+    ],
+    itemOperations: [
+        'get'=> [
+            "security" => "is_granted('ROLE_ADMIN')"
+            ],
+        ],
+    subresourceOperations: [
+        'api_users_orders_get_subresource' => [
+            'security' => "is_granted('ROLE_ADMIN')",
+        ]
+    ],
+)]
 #[ORM\Table(name: '`order`')]
 class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups(['light_read'])]
+    private int $id;
 
     #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[Groups(['light_read'])]
+    private DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'float')]
-    private $price;
+    #[Groups(['light_read'])]
+    private float $price;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $weight;
+    private ?float $weight;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
-    private $user;
+    #[Groups(['light_read'])]
+    private User $user;
 
 //    #[ORM\OneToMany(mappedBy: 'order', targetEntity: AddressType::class)]
 //    private $addresses;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $endAt;
+    private ?DateTimeInterface $endAt;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isValidate;
+    private ?bool $isValidate;
 
     #[ORM\Column(type: 'string', length: 50)]
-    private $status;
+    private string $status;
 
     /*#[ORM\OneToMany(mappedBy: 'purchase', targetEntity: AddressType::class)]
     private $addressTypes;*/

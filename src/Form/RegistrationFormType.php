@@ -35,7 +35,7 @@ class RegistrationFormType extends AbstractType
                 'label' => 'common.userForm.birthDate',
                 'attr' => array(
                     'min' => date('1900-01-01'),
-                    'max' => mktime(0, 0, 0, date("m")-1, date("d"),   date("Y")),
+                    'max' => date('2100-01-01'),
                 )
             ])
             ->add('agreeTerms', CheckboxType::class, [

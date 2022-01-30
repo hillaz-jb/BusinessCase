@@ -8,32 +8,42 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ApiResource(
-    collectionOperations:['get'] , itemOperations: ['get'],
+    collectionOperations: [],
+    itemOperations: [
+        'get' => [
+            "security" => "is_granted('ROLE_ADMIN')"
+        ],
+    ],
+    subresourceOperations: [
+        'api_users_addresses_get_subresource' => [
+            'security' => "is_granted('ROLE_ADMIN')",
+        ],
+    ],
 )]
 class Address
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    private $name;
+    private ?string $name;
 
     #[ORM\Column(type: 'string', length: 150)]
-    private $address1;
+    private string $address1;
 
     #[ORM\Column(type: 'string', length: 150, nullable: true)]
-    private $address2;
+    private ?string $address2;
 
     #[ORM\Column(type: 'string', length: 5)]
-    private $postalCode;
+    private string $postalCode;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $city;
+    private string $city;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
-    private $user;
+    private User $user;
 
     public function getId(): ?int
     {

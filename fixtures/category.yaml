@@ -26,3 +26,23 @@ App\Entity\Category:
     title: 'Jeux Chien'
     description: '<text(200)>'
     parent: '@category1'
+
+  category7:
+    title: 'Croquettes Chat'
+    description: '<text(200)>'
+    parent: '@category3'
+
+  category8:
+    title: 'Croquettes Chien'
+    description: '<text(200)>'
+    parent: '@category4'
+
+  category9:
+    title: 'Pâté Chat'
+    description: '<text(200)>'
+    parent: '@category3'
+
+  category10:
+    title: 'Pâté Chien'
+    description: '<text(200)>'
+    parent: '@category4'

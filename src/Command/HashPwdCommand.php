@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -44,6 +45,9 @@ class HashPwdCommand extends Command
 
         $allUser = $this->userRepository->findAll();
 
+        $progressBar = new ProgressBar($output, count($allUser));
+        $progressBar->start();
+
         foreach ($allUser as $user) {
             $user->setPassword($this->userPasswordHasher->hashPassword(
                 $user,
@@ -51,9 +55,11 @@ class HashPwdCommand extends Command
             ));
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+            $progressBar->advance();
         }
 
-        $output->writeln('Command finished !');
+        $progressBar->finish();
+        $output->writeln("\r\nCommand finished !");
         return Command::SUCCESS;
     }
 }

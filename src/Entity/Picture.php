@@ -11,10 +11,10 @@ class Picture
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'pictures')]
-    private $product;
+    private ?Product $product;
 
     public function getId(): ?int
     {

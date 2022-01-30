@@ -1,7 +1,22 @@
 App\Entity\Product:
-  product{1..200}:
-    title: "<word()>"
+  product1{1..180}:
+    category: "@category<numberBetween(5, 10)>"
+    title: "@self->category.title <word()>"
     ean: "<numerify('#############')>"
+    description: "80%? <text('400')>"
+    stock: "<numberBetween('0', '400')>"
+    price: "<randomFloat(2, 1, 49)>"
     createdAt: "<dateTimeBetween('-120 years', '-1 years', null)>"
     brand: "@brand*"
-    isActive: "<randomElement(['1','0'])>"
+    isActive: "1"
+
+  product2{1..20}:
+    category: "@category<numberBetween(5, 10)>"
+    title: "@self->category.title <word()>"
+    ean: "<numerify('#############')>"
+    description: "90%? <text('400')>"
+    stock: "<numberBetween('0', '400')>"
+    price: "<randomFloat(2, 1, 49)>"
+    createdAt: "<dateTimeBetween('-120 years', '-1 years', null)>"
+    brand: "@brand*"
+    isActive: "0"

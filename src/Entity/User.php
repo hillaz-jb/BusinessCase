@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\UserRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,30 +27,42 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: [
         'get' => [
             'normalization_context' => [
-                'groups' => ['full_admin'],
+                'groups' => ['light_read'],
             ],
             "security" => "is_granted('ROLE_ADMIN')"
         ],
+        'post' => [
+            'denormalization_context' => [
+                'groups' => ['light_write'],
+            ],
+            "security" => "is_granted('ROLE_SUPER_ADMIN')"
+        ]
     ],
     itemOperations: [
-        'get' => [
-            'normalization_context' => [
-                'groups' => ['full_admin'],
-            ],
-            "security" => "is_granted('ROLE_ADMIN')"
+        'get' => ["security" => "is_granted('ROLE_SUPER_ADMIN')"],
+        'put' => ["security" => "is_granted('ROLE_SUPER_ADMIN')"],
+        'delete' => ["security" => "is_granted('ROLE_SUPER_ADMIN')"],
+    ],
+    subresourceOperations: [
+        'api_users_addresses_get_subresource' => [
+            'security' => "is_granted('ROLE_ADMIN')",
         ],
+        'api_users_orders_get_subresource' => [
+            'security' => "is_granted('ROLE_ADMIN')",
+        ]
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'partial', 'lastName' => 'partial'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_read'])]
     private int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_read', 'light_write'])]
     #[Assert\NotBlank, Assert\Email(
         message: 'register.constraints.email.message',
     ), Assert\Length(
@@ -58,11 +72,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_write'])]
     private array $roles = [];
 
     #[ORM\Column(type: 'string')]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_write'])]
     #[Assert\Length(
         min: '8',
         max: '255',
@@ -72,31 +86,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_read', 'light_write'])]
     #[Assert\NotBlank(
         message: 'register.constraints.not_blank',
     )]
     private string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_read', 'light_write'])]
     #[Assert\NotBlank(
         message: 'register.constraints.not_blank',
     )]
     private string $lastName;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
-    #[Groups(['full_admin'])]
     #[ApiSubresource]
     private Collection $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
-    #[Groups(['full_admin'])]
     #[ApiSubresource]
     private Collection $addresses;
 
     #[ORM\Column(type: 'datetime')]
-    #[Groups(['full_admin'])]
+    #[Groups(['light_read', 'light_write'])]
     #[Assert\Type(DateTimeInterface::class), Assert\Range(
         notInRangeMessage: 'register.constraints.birthdate.range',
         min: '-120 years',

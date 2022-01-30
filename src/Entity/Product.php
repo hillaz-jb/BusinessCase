@@ -2,58 +2,81 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
-    collectionOperations:['get'] , itemOperations: ['get'],
+    collectionOperations: [
+        'get' => [
+            'normalization_context' => [
+                'groups' => ['light_read'],
+            ],
+        ],
+    ],
+    itemOperations: ['get'],
 )]
+#[ApiFilter(SearchFilter::class, properties: ['ean' => 'exact', 'title' => 'partial', 'stock' => 'exact'])]
+#[ApiFilter(DateFilter::class, properties: ['createdAt'])]
+#[ApiFilter(BooleanFilter::class, properties: ['isActive'])]
 class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    #[Groups(['light_read'])]
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 13)]
-    private $ean;
+    #[Groups(['light_read'])]
+    private string $ean;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    #[Groups(['light_read'])]
+    private string $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    private ?string $description;
 
     #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    #[Groups(['light_read'])]
+    private ?DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $picture;
+    private ?string $picture;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private $stock;
+    #[Groups(['light_read'])]
+    private ?int $stock;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private $price;
+    #[Groups(['light_read'])]
+    private ?float $price;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
-    private $category;
+    private Category $category;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Picture::class)]
-    private $pictures;
+    private Collection $pictures;
 
     #[ORM\ManyToOne(targetEntity: Brand::class, inversedBy: 'products')]
-    private $brand;
+    private ?Brand $brand;
 
     #[ORM\Column(type: 'boolean')]
-    private $isActive;
+    private ?bool $isActive;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->pictures = new ArrayCollection();
     }

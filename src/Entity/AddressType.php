@@ -16,10 +16,10 @@ class AddressType
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Address::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private $address;
+    private ?Address $address;
 
     #[ORM\Column(type: 'string', length: 20)]
-    private $type;
+    private string $type;
 
     public function getId(): ?int
     {
