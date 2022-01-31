@@ -70,7 +70,7 @@ class RegistrationFormType extends AbstractType
                     'class' => 'btn-success'
                 ],
                 'row_attr' => [
-                    'class' => 'mb-3 text-center'
+                    'class' => 'mt-5 text-center'
                 ]
             ]);
         ;

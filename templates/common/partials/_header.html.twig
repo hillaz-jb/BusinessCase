@@ -36,7 +36,7 @@
         </div>
     </div>
 </nav>#}
-<nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between py-3 px-5">
+<nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-between py-3">
     <a class="navbar-brand d-flex align-items-center" href="{{  path('home_index') }}">
         <img class="img-fluid" src="images/logo.svg" alt="logo" />
         <div class="d-flex flex-column">
@@ -87,10 +87,10 @@
             <li>
                 <span class="nav-link">
                 {% if app.user %}
-                    <span class="text-light me-3">Hello {{ app.user.firstName~' '~app.user.lastName }} !</span>
-                    <a class="btn btn-outline-warning" href="{{ path('app_logout') }}">Déconnexion</a>
+                    <span class="me-3">Hello {{ app.user.firstName~' '~app.user.lastName }} !</span>
+                    <a class="btn btn-outline-success" href="{{ path('app_logout') }}">Déconnexion</a>
                 {% else %}
-                    <a class="btn btn-outline-warning" href="{{ path('app_login') }}">Se connecter</a>
+                    <a class="btn btn-outline-success" href="{{ path('app_login') }}">Se connecter</a>
                 {% endif %}
                 </span>
             </li>

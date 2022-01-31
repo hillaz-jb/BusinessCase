@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}La Nîmes'alerie{% endblock %}
 
 {% block body %}
     <main class="container">
-        <h1 class="text-danger"><i class="fas fa-anchor"></i> Test bootstrap and fontawesome</h1>
-        <a href="{{ path('api_doc') }}" class="fs-2 my-5 btn btn-outline-dark">API</a>
+        <section class="py-5">
+            <h1 class="text-success py-4"><i class="fas fa-anchor"></i> Test bootstrap and fontawesome</h1>
+            <a href="{{ path('api_doc') }}" class="fs-2 my-5 btn btn-outline-success">API</a>
+        </section>
     </main>
-
 {% endblock %}
