@@ -81,6 +81,8 @@ class RegistrationFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'translation_domain' => 'messages',
+            //Remove html5 validator :
+            //'attr' => ['novalidate' => 'novalidate'],
         ]);
     }
 }
