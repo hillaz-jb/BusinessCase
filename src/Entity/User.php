@@ -83,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: 'register.constraints.password.minMessage',
         maxMessage: 'register.constraints.password.maxMessage',
     )]
-    private string $password;
+    public string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['light_read', 'light_write'])]
