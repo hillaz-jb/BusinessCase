@@ -7,7 +7,9 @@ common:
     firstName: "Prénom"
     lastName: "Nom"
     email: "Email"
+    repeatEmail: "Confirmez votre email"
     password: "Mot de Passe"
+    repeatPassword: "Confirmez votre mot de passe"
     birthDate: "Date de naissance"
 login:
   title: "Connexion"

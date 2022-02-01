@@ -2,12 +2,14 @@ register:
   constraints:
     unique : "{{ label }} déjà existant !"
     not_blank: "Veuillez renseigner ce champ !"
+    invalidRepeatMessage: "Les champs sont différents !"
     terms:
       message: "Vous devez accepter les conditions d'utilisation"
     email:
       message: "{{ value }} n'est pas un email valide !"
       maxMessage: "L'email doit faire {{ limit }} caractères maximum !"
     password:
+      repeatLabel: "Confirmez votre mot de passe"
       minMessage: "Le mot de passe doit faire {{ limit }} caractères minimum !"
       maxMessage: "Le mot de passe doit faire {{ limit }} caractères maximum !"
     birthdate:

@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,8 +28,25 @@ class RegistrationFormType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'common.userForm.lastName',
             ])
-            ->add('email', TextType::class, [
-                'label' => 'common.userForm.email',
+            /*            ->add('email', TextType::class, [
+                            'label' => 'common.userForm.email',
+                        ])*/
+            ->add('email', RepeatedType::class, [
+                'type' => TextType::class,
+                'invalid_message' => 'register.constraints.invalidRepeatMessage',
+                'required' => true,
+                'first_options' => [
+                    'label' => 'common.userForm.email',
+                    'row_attr' => [
+                        'class' => 'col-6'
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'common.userForm.repeatEmail',
+                    'row_attr' => [
+                        'class' => 'col-6'
+                    ],
+                ],
             ])
             ->add('birthDate', DateType::class, [
                 'widget' => 'single_text',
@@ -38,28 +56,41 @@ class RegistrationFormType extends AbstractType
                     'max' => date('2100-01-01'),
                 )
             ])
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'register.constraints.invalidRepeatMessage',
+                'required' => true,
+                'mapped' => false,
+                'first_options' => [
+                    'label' => 'common.userForm.password',
+                    'row_attr' => [
+                        'class' => 'col-6'
+                    ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'register.constraints.not_blank',
+                        ]),
+                        new Length([
+                            'min' => 8,
+                            'minMessage' => "register.constraints.password.minMessage",
+                            'max' => 255,
+                            'maxMessage' => "register.constraints.password.maxMessage",
+                        ]),
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'common.userForm.repeatPassword',
+                    'row_attr' => [
+                        'class' => 'col-6'
+                    ],
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label' => 'common.terms.title',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'register.constraints.terms.message',
-                    ]),
-                ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
-                'label' => 'common.userForm.password',
-                'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'register.constraints.password.message',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => "register.constraints.password.minMessage",
-                        'max' => 255,
-                        'maxMessage' => "register.constraints.password.maxMessage",
                     ]),
                 ],
             ])
@@ -72,8 +103,7 @@ class RegistrationFormType extends AbstractType
                 'row_attr' => [
                     'class' => 'mt-5 text-center'
                 ]
-            ]);
-        ;
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
