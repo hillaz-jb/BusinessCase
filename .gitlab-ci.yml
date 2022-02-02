@@ -1,0 +1,36 @@
+stages:
+    - build
+    - deploy
+    - test
+
+BC - build:
+    stage: build
+    image: pockost/php:7.4-apache-bullseye
+    only:
+        refs:
+            - main
+        changes:
+            - composer.json
+            - composer.lock
+    script:
+        - composer install --no-dev --no-interaction --optimize-autoloader --no-scripts
+        - php bin/console assets:install
+    cache:
+        key:
+            files:
+                - composer.json
+                - composer.lock
+    artifacts:
+        paths:
+            - ./bc
+
+BC - deploy:
+    stage: deploy
+    image: pockost/phploy:4.9.3
+    only:
+        refs:
+            - main
+        changes:
+            - /**/*
+    script:
+        - phploy -s bc-prod
